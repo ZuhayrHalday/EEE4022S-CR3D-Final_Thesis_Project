@@ -1,0 +1,25 @@
+/process/optical/processActivation Cerenkov  false
+/process/optical/processActivation OpWLS  false
+/process/optical/processActivation OpWLS2  false
+/process/optical/cerenkov/setStackPhotons false
+
+
+/run/initialize
+/gun/particle mu-
+/gun/energy 2 GeV
+/gun/position 0 50 0 mm 
+/gun/direction 0 -1 0
+/vis/open
+/vis/viewer/set/viewpointVector 1 1 1
+/vis/drawVolume
+/vis/viewer/set/autoRefresh true
+/vis/scene/add/trajectories smooth
+/vis/modeling/trajectories/create/drawByParticleID
+/vis/modeling/trajectories/drawByParticleID-0/set mu- red
+/vis/modeling/trajectories/drawByParticleID-0/set opticalphoton cyan
+/tracking/storeTrajectory 2
+/tracking/verbose 1
+/run/beamOn 1
+/vis/scene/add/eventID
+/vis/scene/endOfEventAction accumulate 10
+/run/initialize

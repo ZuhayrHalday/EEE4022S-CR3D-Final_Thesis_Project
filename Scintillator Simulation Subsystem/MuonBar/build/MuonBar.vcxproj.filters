@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\src\ActionInitialization.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\src\DetectorConstruction.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\src\EventAction.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\src\PrimaryGeneratorAction.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\src\RunAction.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\src\StackingAction.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\src\SteppingAction.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\src\main.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\include\ActionInitialization.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\include\DetectorConstruction.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\include\EventAction.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\include\PrimaryGeneratorAction.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\include\RunAction.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\include\StackingAction.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\include\SteppingAction.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{37E95082-0859-3322-AE3F-CE29795222C3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{7517357E-050B-3AE7-AEED-4CAD0A6E90C4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

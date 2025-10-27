@@ -1,0 +1,59 @@
+# Sweep zenith angle theta in the X–Y plane; each shot goes through the origin.
+# Track: u=(sinθ, -cosθ, 0); Start S = -50 mm * u  ⇒ S + 50 mm * u = 0
+
+# Optics: scintillation only
+/process/optical/processActivation Cerenkov  false
+/process/optical/processActivation OpWLS     false
+/process/optical/processActivation OpWLS2    false
+
+/run/printProgress 100
+/run/initialize
+
+# Source settings shared by all shots
+/gun/particle mu-
+/gun/energy 2 GeV
+
+# θ = 0°
+/gun/position 0.00 50.00 0.00 mm
+/gun/direction 0.0000 -1.0000 0.0000
+/run/beamOn 1
+
+# θ = 10°
+/gun/position -8.68 49.24 0.00 mm
+/gun/direction 0.1736 -0.9848 0.0000
+/run/beamOn 1
+
+# θ = 20°
+/gun/position -17.10 46.99 0.00 mm
+/gun/direction 0.3420 -0.9397 0.0000
+/run/beamOn 1
+
+# θ = 30°
+/gun/position -25.00 43.30 0.00 mm
+/gun/direction 0.5000 -0.8660 0.0000
+/run/beamOn 1
+
+# θ = 40°
+/gun/position -32.14 38.30 0.00 mm
+/gun/direction 0.6428 -0.7660 0.0000
+/run/beamOn 1
+
+# θ = 50°
+/gun/position -38.30 32.14 0.00 mm
+/gun/direction 0.7660 -0.6428 0.0000
+/run/beamOn 1
+
+# θ = 60°
+/gun/position -43.30 25.00 0.00 mm
+/gun/direction 0.8660 -0.5000 0.0000
+/run/beamOn 1
+
+# θ = 70°
+/gun/position -46.98 17.10 0.00 mm
+/gun/direction 0.9397 -0.3420 0.0000
+/run/beamOn 1
+
+# θ = 80°
+/gun/position -49.24 8.68 0.00 mm
+/gun/direction 0.9848 -0.1736 0.0000
+/run/beamOn 1

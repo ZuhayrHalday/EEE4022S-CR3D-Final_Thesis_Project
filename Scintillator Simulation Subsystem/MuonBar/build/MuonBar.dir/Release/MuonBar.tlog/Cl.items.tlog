@@ -1,0 +1,8 @@
+C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\src\ActionInitialization.cc;C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\build\MuonBar.dir\Release\ActionInitialization.obj
+C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\src\DetectorConstruction.cc;C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\build\MuonBar.dir\Release\DetectorConstruction.obj
+C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\src\EventAction.cc;C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\build\MuonBar.dir\Release\EventAction.obj
+C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\src\PrimaryGeneratorAction.cc;C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\build\MuonBar.dir\Release\PrimaryGeneratorAction.obj
+C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\src\RunAction.cc;C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\build\MuonBar.dir\Release\RunAction.obj
+C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\src\StackingAction.cc;C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\build\MuonBar.dir\Release\StackingAction.obj
+C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\src\SteppingAction.cc;C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\build\MuonBar.dir\Release\SteppingAction.obj
+C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\src\main.cc;C:\Users\Zuhayr\Desktop\Geant4\projects\MuonBar\build\MuonBar.dir\Release\main.obj

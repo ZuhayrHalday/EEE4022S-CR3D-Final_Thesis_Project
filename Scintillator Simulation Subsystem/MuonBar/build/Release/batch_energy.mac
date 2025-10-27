@@ -1,0 +1,69 @@
+# batch_energy.mac — energy sweep without /control/foreach
+
+# Keep scintillation-only optics
+/process/optical/processActivation Cerenkov  false
+/process/optical/processActivation OpWLS     false
+/process/optical/processActivation OpWLS2    false
+
+/run/initialize
+
+# Source setup (shared)
+/gun/particle mu-
+/gun/position 0 50 0 mm
+/gun/direction 0 -1 0
+
+# --- E = 0.5 GeV ---
+/gun/energy 0.5 GeV
+/run/beamOn 1
+
+# --- E = 0.5 GeV ---
+/gun/energy 0.6 GeV
+/run/beamOn 1
+
+# --- E = 0.5 GeV ---
+/gun/energy 0.7 GeV
+/run/beamOn 1
+
+# --- E = 0.5 GeV ---
+/gun/energy 0.8 GeV
+/run/beamOn 1
+
+# --- E = 0.5 GeV ---
+/gun/energy 0.9 GeV
+/run/beamOn 1
+
+# --- E = 1.0 GeV ---
+/gun/energy 1.0 GeV
+/run/beamOn 1
+
+# --- E = 1.5 GeV ---
+/gun/energy 1.5 GeV
+/run/beamOn 1
+
+# --- E = 2.0 GeV ---
+/gun/energy 2.0 GeV
+/run/beamOn 1
+
+# --- E = 2.5 GeV ---
+/gun/energy 2.5 GeV
+/run/beamOn 1
+
+# --- E = 3.0 GeV ---
+/gun/energy 3.0 GeV
+/run/beamOn 1
+
+# --- E = 3.5 GeV ---
+/gun/energy 3.5 GeV
+/run/beamOn 1
+
+# --- E = 4.0 GeV ---
+/gun/energy 4.0 GeV
+/run/beamOn 1
+
+# --- E = 4.5 GeV ---
+/gun/energy 4.5 GeV
+/run/beamOn 1
+
+# --- E = 5.0 GeV ---
+/gun/energy 5.0 GeV
+/run/beamOn 1

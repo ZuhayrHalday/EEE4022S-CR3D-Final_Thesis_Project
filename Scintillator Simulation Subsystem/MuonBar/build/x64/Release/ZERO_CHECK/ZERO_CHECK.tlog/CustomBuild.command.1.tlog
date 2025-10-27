@@ -1,0 +1,10 @@
+^C:\USERS\ZUHAYR\DESKTOP\GEANT4\PROJECTS\MUONBAR\BUILD\CMAKEFILES\8E9BF46048393A3379D103F4529A68DD\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Zuhayr/Desktop/Geant4/projects/MuonBar -BC:/Users/Zuhayr/Desktop/Geant4/projects/MuonBar/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/Zuhayr/Desktop/Geant4/projects/MuonBar/build/MuonBar.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
