@@ -1,8 +1,8 @@
 #pragma once
 #include "G4VUserPrimaryGeneratorAction.hh"
 
-class G4Event;          // forward decl (pointer only)
-class G4ParticleGun;    // forward decl
+class G4Event;
+class G4ParticleGun;
 
 class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction {
 public:

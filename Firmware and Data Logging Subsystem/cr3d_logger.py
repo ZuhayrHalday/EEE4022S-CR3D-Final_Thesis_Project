@@ -1,4 +1,4 @@
-# ====== cr3d_logger.py (scrollable sidebar + fixed bottom actions) ======
+# ====== cr3d_logger.py ======
 import threading, queue, time, json, csv, pathlib, sys, math
 from collections import deque
 import tkinter as tk
@@ -19,7 +19,7 @@ APP_TITLE = "DESKTOP MUON LOGGER"
 THEME = {
     "bg_dark":        "#0b1117",  # main window background
     "bg_panel_top":   "#000811",  # TOP BAR color
-    "bg_panel_side":  "#111925",  # SIDEBAR color (also scrollable panel + actions)
+    "bg_panel_side":  "#111925",  # SIDEBAR color
     "fg_main":        "#e6f0ff",
     "fg_dim":         "#a9c1ff",
     "accent":         "#6bb4ff",
@@ -39,7 +39,7 @@ CSV_HEADER = [
 LOCAL_TZ = get_localzone()
 LOGO_CANDIDATES = ["logo.png","cr3d_logo.png","CR3D_logo.png"]
 
-# ------ Running histogram (for MPV) without numpy ------
+# ------ Running histogram ------
 class RunningHist:
     def __init__(self, bin_width_mv=10.0, max_bins=400):
         self.w = float(bin_width_mv)
@@ -63,7 +63,7 @@ class CR3DApp(tk.Tk):
         self.title(APP_TITLE)
         self.configure(bg=THEME["bg_dark"])
         try:
-            self.after(0, lambda: self.state('zoomed'))  # maximize
+            self.after(0, lambda: self.state('zoomed')) 
         except Exception:
             pass
         self.resizable(False, False)
@@ -107,9 +107,9 @@ class CR3DApp(tk.Tk):
         # UI
         self._build_styles()
         self._build_topbar()
-        self._build_main_area()   # builds scrollable stats + actions holder
-        self._build_stats_content()  # fills the scrollable panel with labels/rows
-        self._build_controls()    # packs Start/Stop into fixed bottom panel
+        self._build_main_area()   
+        self._build_stats_content()  
+        self._build_controls()    
 
         # Periodic tasks
         self._refresh_ports()
@@ -128,7 +128,7 @@ class CR3DApp(tk.Tk):
                 png_path = str(p); break
         if not png_path: return
         try:
-            from PIL import Image, ImageTk  # type: ignore
+            from PIL import Image, ImageTk  
             img = Image.open(png_path).convert("RGBA")
             target_h = 100
             w, h = img.size; scale = target_h / h
@@ -173,7 +173,7 @@ class CR3DApp(tk.Tk):
         style.configure(
         "SideHeader.TLabel",
         background=THEME["bg_panel_side"],
-        foreground=THEME["accent"],          # or THEME["fg_main"] if you prefer
+        foreground=THEME["accent"],         
         font=("Segoe UI Semibold", 16)
 )
 
@@ -210,7 +210,7 @@ class CR3DApp(tk.Tk):
         self.led_id = self.led.create_oval(8,8,52,52, fill=THEME["red"], outline="")
         self.led_text = self.led.create_text(30,30, text="IDLE", fill="white", font=("Segoe UI Semibold", 11))
 
-    # ---------- Scroll helpers (REPLACE THIS WHOLE SECTION) ----------
+    # ---------- Scroll helpers ----------
     def _bind_wheel(self, widget):
         # Activate global wheel bindings when the mouse is over the canvas
         widget.bind("<Enter>", lambda e: self._wheel_bind_all())
@@ -229,7 +229,7 @@ class CR3DApp(tk.Tk):
         self.unbind_all("<Button-5>")
 
     def _on_mousewheel(self, event):
-        # Faster, more responsive scroll (3 lines per notch)
+        
         self.stats_canvas.yview_scroll(-int(event.delta/120)*3, "units")
 
     def _on_mousewheel_linux_up(self, event):
@@ -245,27 +245,27 @@ class CR3DApp(tk.Tk):
         container = ttk.Frame(self, style="TFrame")
         container.pack(fill="both", expand=True)
 
-        # ---- Plot area (unchanged) ----
+        # ---- Plot area ----
         self.plot_container = ttk.Frame(container, style="TFrame")
         self.plot_container.pack(side="left", fill="both", expand=True)
 
-        # ---- Sidebar shell (fixed width, our color) ----
+        # ---- Sidebar shell  ----
         self.sidebar = ttk.Frame(container, style="Side.TFrame", width=320)
         self.sidebar.pack(side="right", fill="y")
         self.sidebar.pack_propagate(False)
 
-        # ---- Scrollable STATS panel (top; fills remaining vertical space) ----
+        # ---- Scrollable STATS panel  ----
         stats_holder = ttk.Frame(self.sidebar, style="Side.TFrame")
         stats_holder.pack(side="top", fill="both", expand=True)
 
-        # Canvas + real scrollbar for reliability across themes
+        
         self.stats_canvas = tk.Canvas(
             stats_holder,
             bg=THEME["bg_panel_side"],
             highlightthickness=0,
             borderwidth=0,
         )
-        self.stats_canvas.configure(yscrollincrement=20)  # smoother, consistent step
+        self.stats_canvas.configure(yscrollincrement=20) 
 
         self.stats_vsb = tk.Scrollbar(stats_holder, orient="vertical", command=self.stats_canvas.yview)
         self.stats_canvas.configure(yscrollcommand=self.stats_vsb.set)
@@ -273,25 +273,22 @@ class CR3DApp(tk.Tk):
         self.stats_canvas.pack(side="left", fill="both", expand=True)
         self.stats_vsb.pack(side="right", fill="y")
 
-        # Inner frame that actually holds all the stat rows
+        # Inner frame
         self.stats_frame = ttk.Frame(self.stats_canvas, style="Side.TFrame")
         self.stats_window = self.stats_canvas.create_window((0, 0), window=self.stats_frame, anchor="nw")
 
-        # Keep scrollregion and inner width in sync with content/canvas size
+        
         def _on_frame_configure(event=None):
             self.stats_canvas.configure(scrollregion=self.stats_canvas.bbox("all"))
-            # Make the inner frame match the canvas width so content doesn't clip
             self.stats_canvas.itemconfigure(self.stats_window, width=self.stats_canvas.winfo_width())
 
         self.stats_frame.bind("<Configure>", _on_frame_configure)
         self.stats_canvas.bind("<Configure>", _on_frame_configure)
 
-        # Responsive mouse-wheel scrolling when hovering the canvas
-        # (requires the _bind_wheel helper from the previous patch)
+        # Responsive mouse-wheel scrolling
         self._bind_wheel(self.stats_canvas)
 
         # ---- Fixed ACTIONS panel (footer) ----
-        # Start/Stop buttons will be created later in _build_controls()
         self.actions_frame = ttk.Frame(self.sidebar, style="Side.TFrame")
         self.actions_frame.pack(side="bottom", fill="x", padx=14, pady=14)
 
@@ -309,7 +306,7 @@ class CR3DApp(tk.Tk):
         ttk.Label(self.stats_frame, text="Session statistics", style="SideHeader.TLabel")\
         .pack(anchor="w", padx=14, pady=(14,6))
 
-        # (Optional) thin divider under the header
+        # Thin divider under the header
         ttk.Separator(self.stats_frame, orient="horizontal").pack(fill="x", padx=14, pady=(0,10))
 
         # --- Section: Counting ---
@@ -352,7 +349,7 @@ class CR3DApp(tk.Tk):
         lbl.pack(anchor="w", pady=(1,0))
         setattr(self, attrname, lbl)
 
-    # ---------- Controls (fixed bottom, already created holder) ----------
+    # ---------- Controls ----------
     def _build_controls(self):
         self.start_btn = ttk.Button(self.actions_frame, text="Start logging", style="Start.TButton", command=self._start_logging)
         self.start_btn.pack(fill="x", pady=(0, 6))
@@ -531,7 +528,7 @@ class CR3DApp(tk.Tk):
         with self.session_csv.open("a", newline="") as f:
             csv.writer(f).writerow(row)
 
-    # ---------- LED ----------
+    # ---------- Hit indicator ----------
     def _set_led_idle(self):
         self.led.itemconfigure(self.led_id, fill=THEME["red"])
         self.led.itemconfigure(self.led_text, text="IDLE")

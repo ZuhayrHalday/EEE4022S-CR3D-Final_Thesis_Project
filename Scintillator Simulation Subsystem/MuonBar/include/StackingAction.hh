@@ -1,4 +1,3 @@
-// StackingAction.hh
 #pragma once
 #include "G4UserStackingAction.hh"
 class EventAction;

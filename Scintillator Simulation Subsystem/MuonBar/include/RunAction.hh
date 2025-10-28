@@ -12,11 +12,11 @@ public:
 
   void AddDetectedPhoton(G4int n=1) { fPhotonHits += n; }
 
-  // Files for thesis outputs (kept public so existing code still works)
+  // Files for outputs
   std::ofstream fCountsCSV;
   std::ofstream fHistCSV;
 
-  // NEW: small helpers used by EventAction.cc
+  // Helpers used by EventAction.cc
   inline bool CountsCSVIsOpen() const { return fCountsCSV.is_open(); }
   inline std::ofstream& CountsCSV()   { return fCountsCSV; }
 

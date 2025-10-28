@@ -1,9 +1,9 @@
 #pragma once
 #include "G4VUserDetectorConstruction.hh"
 #include "globals.hh"
-#include "G4GenericMessenger.hh"     // needed because destructor is defaulted here
-#include "G4SystemOfUnits.hh"        // for 'mm' in member initialization
-#include <memory>                    // for std::unique_ptr
+#include "G4GenericMessenger.hh"
+#include "G4SystemOfUnits.hh"
+#include <memory>
 
 class G4LogicalVolume;
 class G4VPhysicalVolume;
@@ -22,5 +22,5 @@ public:
 
 private:
   G4double fWinHalfXY = 3.0 * mm;                 // SiPM window half-size (square)
-  std::unique_ptr<G4GenericMessenger> fMsg;       // /det/winXY messenger
+  std::unique_ptr<G4GenericMessenger> fMsg; 
 };

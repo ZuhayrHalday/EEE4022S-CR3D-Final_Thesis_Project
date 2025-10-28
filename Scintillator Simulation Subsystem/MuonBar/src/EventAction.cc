@@ -29,7 +29,7 @@ void EventAction::EndOfEventAction(const G4Event* evt) {
   const double path_cm = fMuonPath_mm * 0.1;            // mm → cm
   const double dedx    = (path_cm > 0.) ? (fMuonDE_MeV / path_cm) : 0.0; // MeV/cm
 
-  // SiPM charge/current proxy (document Gain & tau as assumptions)
+  // SiPM charge/current proxy
   const double q_e  = 1.602176634e-19 * coulomb; // C
   const double Gain = 1.0e6;
   const double tau  = 30.0 * ns;

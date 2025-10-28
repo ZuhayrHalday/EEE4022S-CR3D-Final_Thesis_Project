@@ -1,4 +1,3 @@
-// StackingAction.cc
 #include "StackingAction.hh"
 #include "EventAction.hh"
 #include "G4Track.hh"

@@ -1,4 +1,3 @@
-// DetectorConstruction.cc
 #include "DetectorConstruction.hh"
 
 #include "G4NistManager.hh"
@@ -13,7 +12,7 @@
 #include "G4OpticalSurface.hh"
 #include "G4LogicalBorderSurface.hh"
 
-#include "G4GenericMessenger.hh"   // <-- needed for the /det/winXY messenger
+#include "G4GenericMessenger.hh" 
 
 #include "G4SystemOfUnits.hh"
 #include "G4PhysicalConstants.hh"
@@ -23,7 +22,7 @@
 G4VPhysicalVolume* DetectorConstruction::Construct() {
   auto* nist = G4NistManager::Instance();
 
-  // Messenger to tweak geometry before initialization (create once)
+  // Messenger to tweak geometry before initialization
   if (!fMsg) {
     fMsg = std::make_unique<G4GenericMessenger>(this, "/det/", "Detector controls");
     fMsg->DeclarePropertyWithUnit("winXY", "mm", fWinHalfXY, "SiPM window half-size (square).");
@@ -58,13 +57,13 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
   const std::vector<G4double> RIGel(E.size(), 1.46);
   const std::vector<G4double> RIWin(E.size(), 1.52);
 
-  // Absorption (generous defaults)
+  // Absorption
   const std::vector<G4double> ABS_Air(E.size(), 1e6*m);
   const std::vector<G4double> ABS_EJ (E.size(), 380*cm);
   const std::vector<G4double> ABS_Gel(E.size(), 5*m);
   const std::vector<G4double> ABS_Win(E.size(), 50*m);
 
-  // EJ-200 emission (placeholder shape; replace with datasheet if you like)
+  // EJ-200 emission
   const std::vector<G4double> EM = {0.1, 0.25, 0.6, 1.0, 0.9, 0.6, 0.3, 0.1, 0.05};
 
   auto setBulkOptics = [&](G4Material* M,
@@ -154,12 +153,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
   new G4LogicalBorderSurface("WrapBack_Rod",   rodPV,    wrapBackPV,  surfBack);
   new G4LogicalBorderSurface("WrapBack_Rod_r", wrapBackPV, rodPV,     surfBack);
 
-  // ---- Readout stack: Gel -> Window (square fWinHalfXY x fWinHalfXY) -> Photocathode ----
+  // ---- Readout stack: Gel -> Window -> Photocathode ----
   const G4double gelT = 0.10*mm;
   const G4double winT = 0.50*mm;
   const G4double pcT  = 0.01*mm;
 
-  // Use fWinHalfXY in Y and Z so /det/winXY controls the clear aperture
   auto* gelS  = new G4Box("Gel",          gelT/2,  fWinHalfXY, fWinHalfXY);
   auto* winS  = new G4Box("SiPMWindow",   winT/2,  fWinHalfXY, fWinHalfXY);
   auto* pcS   = new G4Box("Photocathode", pcT/2,   fWinHalfXY, fWinHalfXY);
@@ -176,9 +174,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
   auto* pcSurf = new G4OpticalSurface("PhotocathodeSurface", unified, polished, dielectric_metal);
   {
     auto* pcMPT = new G4MaterialPropertiesTable();
-    // Flat PDE placeholder; replace with PDE(λ) when ready
-    const std::vector<G4double> PDE(E.size(), 0.60); // ~60%
-    const std::vector<G4double> RPC(E.size(), 0.0);  // no reflection on miss
+    const std::vector<G4double> PDE(E.size(), 0.63); // ~63%
+    const std::vector<G4double> RPC(E.size(), 0.0); 
     pcMPT->AddProperty("EFFICIENCY",   E, PDE);
     pcMPT->AddProperty("REFLECTIVITY", E, RPC);
     pcSurf->SetMaterialPropertiesTable(pcMPT);

@@ -5,8 +5,8 @@
 // - D13: blink on event
 //
 // Baseline modes:
-//   FIXED  -> use FIXED_BASELINE_mV (default 880.0 mV for your ~0.83–0.88 V idle)
-//   AUTO   -> running median of recent samples
+//   FIXED
+//   AUTO 
 //
 // Serial commands (newline-terminated, case-insensitive):
 //   SET MODE AUTO
@@ -14,21 +14,14 @@
 //   SET BASELINE_MV <float>
 //   SET THRESHOLD_MV <float>
 //   SET PULSER ON|OFF
-//   SET PULSE_US <uint>            (e.g., 10)
-//   SET PERIOD_MS <uint>           (e.g., 5000)
+//   SET PULSE_US <uint> 
+//   SET PERIOD_MS <uint> 
 //
 // Output (newline-terminated JSON):
 //   {"type":"hello", ...}
 //   {"type":"sample","ts_us":...,"adc":...,"mv":...,"dht_C":null}
 //   {"type":"event","ts_us":...,"adc_peak":...,"mv_peak":...,
 //    "baseline_adc":...,"dead_us":...,"dht_C":null}
-//
-// Notes:
-// - DEFAULT analogReference (~5.00 V). Update VREF_V if you use external AREF.
-// - Adds a synchronized "scope" sample ~300 us after each D8 pulse so the GUI
-//   reliably shows the held peak without flooding serial (periodic bg samples
-//   remain at 20 ms).
-// - Toss+settle is used before important ADC reads for better fidelity.
 // ======================================================================
 
 #include <Arduino.h>
@@ -52,7 +45,7 @@ const uint32_t SAMPLE_EMIT_US = 1000;    // background telemetry sample every 20
 #define BASELINE_MODE_AUTO  0
 #define BASELINE_MODE_FIXED 1
 
-uint8_t BASELINE_MODE      = BASELINE_MODE_FIXED; // default for your grounded rig
+uint8_t BASELINE_MODE      = BASELINE_MODE_FIXED; 
 float   FIXED_BASELINE_mV  = 880.0f;              // ~0.88 V idle
 
 // ---- Baseline estimation buffer (AUTO mode) ----
@@ -104,7 +97,6 @@ inline void pulser_tick() {
       digitalWrite(PIN_PULSE, HIGH);
       pulse_state = 1;
       pulse_end_us = now + PULSE_US;
-      // schedule a synchronized "scope" sample during the held plateau
       scope_due_us = now + SCOPE_DELAY_US;
     }
   } else { // HIGH
@@ -167,7 +159,6 @@ void setup() {
   Serial.begin(115200);
   delay(20);
 
-  // Seed AUTO baseline buffer with toss+settle reads
   for (uint8_t i=0; i<BLEN; ++i) { bl_buf[i] = adc_toss_then_read(PIN_ADC, 150); delay(5); }
   bl_filled = true;
 
@@ -197,10 +188,10 @@ void loop() {
     if (line.length()) handleCommandLine(line);
   }
 
-  // Pulser (kept non-blocking)
+  // Pulser (non-blocking)
   pulser_tick();
 
-  // ---- Synchronized scope sample (so GUI catches the held peak) ----
+  // ---- Synchronized scope sample  ----
   uint32_t now_us = micros();
   if (scope_due_us && (int32_t)(now_us - scope_due_us) >= 0) {
     scope_due_us = 0;
@@ -213,8 +204,7 @@ void loop() {
     Serial.print(F(",\"dht_C\":null"));
     Serial.println('}');
   }
-
-  // ---- One background sample for telemetry / baseline AUTO buffer ----
+  
   static uint32_t last_sample_emit = 0;
   if ((uint32_t)(now_us - last_sample_emit) >= SAMPLE_EMIT_US) {
     last_sample_emit = now_us;
@@ -222,7 +212,7 @@ void loop() {
     uint16_t adc_bg = adc_toss_then_read(PIN_ADC, 150);
     float mv_bg = adc_bg * LSB_mV;
 
-    // Update AUTO baseline buffer
+    // Update AUTO baseline
     bl_buf[bl_i] = adc_bg;
     bl_i = (bl_i + 1) % BLEN;
     if (bl_i == 0) bl_filled = true;
@@ -234,7 +224,7 @@ void loop() {
     Serial.println('}');
   }
 
-  // ---- Baseline in raw & mV (for detection) ----
+  // ---- Baseline in raw & mV ----
   uint16_t bl_adc;
   float bl_mV;
   if (BASELINE_MODE == BASELINE_MODE_FIXED) {
@@ -245,17 +235,15 @@ void loop() {
     bl_mV  = bl_adc * LSB_mV;
   }
 
-  // ---- Detection with peak hunt ----
   static uint32_t last_event_time = 0;
   bool in_dead = (uint32_t)(now_us - last_event_time) < DEAD_TIME_US;
 
-  // Current sample for trigger decision (use toss+settle)
+  // Current sample for trigger decision 
   uint16_t adc_now = adc_toss_then_read(PIN_ADC, 150);
   float mv_now = adc_now * LSB_mV;
   float over_mV = mv_now - bl_mV;
 
   if (!in_dead && over_mV >= THRESHOLD_mV) {
-    // Peak hunt during PEAK_HOLD_US while keeping pulser alive
     uint16_t peak_adc = adc_now;
     uint32_t start = micros();
     while ((uint32_t)(micros() - start) < PEAK_HOLD_US) {
@@ -268,7 +256,7 @@ void loop() {
     uint32_t dead_us  = ts_event - last_event_time;
     last_event_time   = ts_event;
 
-    // LED blink (very short so as not to disturb anything)
+    // LED blink
     digitalWrite(PIN_LED, HIGH);
     delayMicroseconds(200);
     digitalWrite(PIN_LED, LOW);

@@ -1,5 +1,4 @@
 # Sweep zenith angle theta in the X–Y plane; each shot goes through the origin.
-# Track: u=(sinθ, -cosθ, 0); Start S = -50 mm * u  ⇒ S + 50 mm * u = 0
 
 # Optics: scintillation only
 /process/optical/processActivation Cerenkov  false
@@ -9,7 +8,7 @@
 /run/printProgress 100
 /run/initialize
 
-# Source settings shared by all shots
+# Source
 /gun/particle mu-
 /gun/energy 2 GeV
 

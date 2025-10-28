@@ -1,4 +1,4 @@
-# batch_energy.mac — energy sweep without /control/foreach
+# batch_energy.mac — energy sweep
 
 # Keep scintillation-only optics
 /process/optical/processActivation Cerenkov  false
@@ -16,19 +16,19 @@
 /gun/energy 0.5 GeV
 /run/beamOn 1
 
-# --- E = 0.5 GeV ---
+# --- E = 0.6 GeV ---
 /gun/energy 0.6 GeV
 /run/beamOn 1
 
-# --- E = 0.5 GeV ---
+# --- E = 0.7 GeV ---
 /gun/energy 0.7 GeV
 /run/beamOn 1
 
-# --- E = 0.5 GeV ---
+# --- E = 0.8 GeV ---
 /gun/energy 0.8 GeV
 /run/beamOn 1
 
-# --- E = 0.5 GeV ---
+# --- E = 0.9 GeV ---
 /gun/energy 0.9 GeV
 /run/beamOn 1
 

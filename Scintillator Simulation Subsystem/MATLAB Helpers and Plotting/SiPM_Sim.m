@@ -1,6 +1,4 @@
 %% SiPM Charge/Current from photons_detected
-% Works with any CSV that has a 'photons_detected' column.
-% Saves an augmented CSV and produces charge/current plots.
 
 % ---------------- User-settable parameters ----------------
 inFile         = 'photon_counts.csv';  % your CSV filename
@@ -13,7 +11,7 @@ P_xtalk        = 0.23;                % ~23% typical
 P_ap           = 0.01;                % <1% typical
 % ----------------------------------------------------------
 
-% Robust read
+% Read
 T = readtable(inFile);
 
 % Basic validation
@@ -29,25 +27,22 @@ end
 % Interpret photons_detected as primary photoelectrons before correlated noise
 Npe_prim = double(T.photons_detected);
 
-% Optionally include first-order correlated noise
 if includeNoise
     Npe_eff = Npe_prim .* (1 + P_xtalk + P_ap);
 else
     Npe_eff = Npe_prim;
 end
 
-% Charge per row/event: Q = Npe_eff * Gain * q_e  [C]
+% Charge Q = Npe_eff * Gain * q_e  [C]
 Q_C = Npe_eff .* device.gain .* device.qe;
 
-% Peak current per event using simple RC pulse: I_peak ≈ Q / tau_rec  [A]
+% Peak current I_peak ≈ Q / tau_rec  [A]
 I_peak_A = Q_C ./ device.tau_rec;
 
-% Add derived columns to table
 T.SiPM_charge_C   = Q_C;
 T.SiPM_Ipeak_A    = I_peak_A;
-T.Npe_eff         = Npe_eff;  % for transparency
+T.Npe_eff         = Npe_eff;  
 
-% Write augmented CSV
 if isempty(outFile)
     [p,n,~] = fileparts(inFile);
     outFile = fullfile(p, sprintf('%s_with_sipm_results.csv', n));
@@ -55,23 +50,22 @@ end
 writetable(T, outFile);
 fprintf('Wrote results to %s\n', outFile);
 
-% Helpful scalars for plot labels
 gainStr = sprintf('G = %.2g', device.gain);
 tauStr  = sprintf('\\tau_{rec} = %.0f ns', device.tau_rec*1e9);
 
 % --------- Plots ---------
-% 1) Charge per row/event
+% 1) Charge
 figure('Name','SiPM Charge per Row','Color','w');
-plot(Q_C*1e12, 'LineWidth', 1.5);            % pC for readability
+plot(Q_C*1e12, 'LineWidth', 1.5);            
 xlabel('Row / Event #');
 ylabel('Charge Q [pC]');
 grid on;
 title(sprintf('SiPM Charge per Row  (%s, %s, noise %s)', ...
     gainStr, tauStr, string(includeNoise)));
 
-% 2) Peak current per row/event
+% 2) Peak current
 figure('Name','SiPM Peak Current per Row','Color','w');
-plot(I_peak_A*1e3, 'LineWidth', 1.5);        % mA for readability
+plot(I_peak_A*1e3, 'LineWidth', 1.5);       
 xlabel('Row / Event #');
 ylabel('Peak Current I_{peak} [mA]');
 grid on;

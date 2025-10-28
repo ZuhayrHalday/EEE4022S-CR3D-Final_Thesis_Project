@@ -25,12 +25,11 @@ int main(int argc, char** argv) {
   G4LossTableManager::Instance()->EmSaturation();
   runManager->SetUserInitialization(phys);
 
-  // Optical parameters (Geant4 11.x)
+  // Optical parameters
   auto* op = G4OpticalParameters::Instance();
 
-  // If you ONLY want scintillation, keep Cerenkov off:
+  // If you ONLY want scintillation, keep Cherenkov off:
   op->SetProcessActivation("Cerenkov", false);
-  // If you want Cherenkov too, enable and set a reasonable limit:
   // op->SetProcessActivation("Cerenkov", true);
   // op->SetCerenkovMaxPhotonsPerStep(100);
   // op->SetCerenkovTrackSecondariesFirst(true);
@@ -57,7 +56,7 @@ int main(int argc, char** argv) {
     delete visManager;
     delete ui;
   } else {
-    // Pure batch mode (no vis initialisation => avoids 'No current scene' errors)
+    // Pure batch mode (no vis initialisation)
     auto* UImanager = G4UImanager::GetUIpointer();
     G4String cmd   = "/control/execute ";
     G4String macro = argv[1];

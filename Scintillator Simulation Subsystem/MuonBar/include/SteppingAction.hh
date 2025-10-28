@@ -1,4 +1,3 @@
-// SteppingAction.hh
 #pragma once
 #include "G4UserSteppingAction.hh"
 

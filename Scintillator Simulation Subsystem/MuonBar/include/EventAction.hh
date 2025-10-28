@@ -1,6 +1,6 @@
 #pragma once
 #include "G4UserEventAction.hh"
-#include "globals.hh"          // for G4double
+#include "globals.hh"
 #include <vector>
 
 class G4Event;
@@ -14,10 +14,10 @@ public:
   void BeginOfEventAction(const G4Event*) override;
   void EndOfEventAction(const G4Event*) override;
 
-  // Record a detected-photon arrival time in ns (called by SteppingAction)
+  // Record a detected-photon arrival time in ns
   void RecordHitTime(double t_ns);
 
-  // ---- New per-event accumulator API (used by SteppingAction/StackingAction)
+  // ---- Per-event accumulator API
   inline void AddMuonPath(G4double dl_mm)   { fMuonPath_mm += dl_mm; }     // mm
   inline void AddMuonDE  (G4double dE_MeV)  { fMuonDE_MeV  += dE_MeV; }    // MeV
 
@@ -30,7 +30,6 @@ public:
   inline G4int    GetPhotonsProduced()const { return fPhotonsProduced; }
   inline G4int    GetPhotonsArrived() const { return fPhotonsArrived;  }
 
-  // Public so EventAction.cc can fill it freely
   std::vector<double> fTimes;
 
   // Time histogram window (ns) and bin (ns) used in EventAction.cc

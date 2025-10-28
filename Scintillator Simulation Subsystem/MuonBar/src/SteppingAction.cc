@@ -1,4 +1,3 @@
-// SteppingAction.cc
 #include "SteppingAction.hh"
 #include "EventAction.hh"
 
@@ -17,7 +16,6 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
   auto* post  = step->GetPostStepPoint();
 
   // --- 1) Muon path length & energy deposition inside EJ-200 ---
-  // Run this BEFORE restricting to optical photons, so muon steps are handled.
   if (track->GetDefinition()->GetParticleName() == "mu-" ||
       track->GetDefinition()->GetParticleName() == "mu+") {
     if (pre && pre->GetTouchableHandle()->GetVolume()) {
@@ -31,7 +29,6 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
     }
   }
 
-  // From here on, we only care about optical photons.
   if (track->GetDefinition() != G4OpticalPhoton::Definition()) return;
 
   // Only act at geometry boundaries.
@@ -47,7 +44,6 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
   }
 
   // --- 3) Detection at the window↔photocathode boundary via OpBoundary ---
-  // Find OpBoundary for THIS thread; do not cache across threads.
   auto* pm = track->GetDefinition()->GetProcessManager();
   if (!pm) return;
   auto* postVec = pm->GetPostStepProcessVector(typeDoIt);
@@ -63,7 +59,6 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
 
   if (boundary->GetStatus() == Detection) {
     if (fEvent) fEvent->RecordHitTime(post->GetGlobalTime() / ns);
-    // Tidy up: stop tracking after a detection (matches your original behavior)
     track->SetTrackStatus(fStopAndKill);
   }
 }

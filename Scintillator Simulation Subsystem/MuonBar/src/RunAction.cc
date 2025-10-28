@@ -9,20 +9,18 @@ RunAction::RunAction() {}
 RunAction::~RunAction() {}
 
 void RunAction::BeginOfRunAction(const G4Run*) {
-  // reset per-run accumulator used for the console summary
   fPhotonHits = 0;
 
   // Ensure output folder exists
   std::filesystem::create_directory("output");
 
-  // ----- photon_counts.csv (append; write header only if new/empty)
+  // ----- photon_counts.csv -----
   const char* countsPath = "output/photon_counts.csv";
   bool writeCountsHeader = !std::filesystem::exists(countsPath)
                         || std::filesystem::file_size(countsPath) == 0;
 
   fCountsCSV.open(countsPath, std::ios::out | std::ios::app);
   if (writeCountsHeader) {
-    // Keep this header EXACTLY in sync with EventAction.cc row layout
     fCountsCSV
       << "event_id"
       << ",muon_path_mm"
@@ -36,7 +34,7 @@ void RunAction::BeginOfRunAction(const G4Run*) {
     fCountsCSV.flush();
   }
 
-  // ----- time_histograms.csv (append; write header only if new/empty)
+  // ----- time_histograms.csv -----
   const char* histPath = "output/time_histograms.csv";
   bool writeHistHeader = !std::filesystem::exists(histPath)
                       || std::filesystem::file_size(histPath) == 0;

@@ -1,4 +1,4 @@
-# --- Hard-coded sweep of SiPM window half-size (W = 2,3,4,5,6 mm) ---
+# --- Sweep of SiPM window half-size (W = 2,3,4,5,6 mm) ---
 /control/verbose 2
 /run/printProgress 100
 
@@ -7,21 +7,18 @@
 /process/optical/processActivation OpWLS     false
 /process/optical/processActivation OpWLS2    false
 /run/initialize
-# Source (adjust if needed)
+# Source
 /gun/particle  mu-
 /gun/energy    2 GeV
 /gun/position  0 50 0 mm
 /gun/direction 0 -1 0
-
-# Optional: single-threaded when changing geometry repeatedly
-#/run/numberOfThreads 1
 
 # Initialize once
 
 
 # -------- W = 2 mm --------
 /control/echo === Sweep: window half-size W = 2 mm ===
-/det/winXY 2 mm             # If your UI expects one value (square)
+/det/winXY 2 mm             
 /run/reinitializeGeometry
 /run/beamOn 1
 

@@ -3,7 +3,7 @@
 #include "RunAction.hh"
 #include "EventAction.hh"
 #include "SteppingAction.hh"
-#include "StackingAction.hh"  // <-- required
+#include "StackingAction.hh" 
 
 void ActionInitialization::Build() const {
 
@@ -19,10 +19,7 @@ void ActionInitialization::Build() const {
   auto* step = new SteppingAction(evt);
   SetUserAction(step);
 
-  // NEW: counts scintillation-produced optical photons at track creation
+  // Counts scintillation-produced optical photons at track creation
   auto* stack = new StackingAction(evt);
   SetUserAction(stack);
-
-  // NOTE: We intentionally do NOT create any sensitive detector here.
-  // Counting happens in SteppingAction at the window↔photocathode boundary.
 }
